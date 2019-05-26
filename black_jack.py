@@ -8,14 +8,10 @@ class Card():
     def __init__(self,suit,rank):
         self.suit=suit
         self.rank=rank
-
     def __str__(self):
        return f"{self.rank} of {self.suit}"
 
-
 class Deck():
-
-
     def __init__(self):
         self.deck=[]
         for suit in suits:
@@ -23,8 +19,7 @@ class Deck():
                 self.deck.append(Card(suit,rank))
 
     def shuffling(self):
-
-        random.shuffle(self.deck)
+       random.shuffle(self.deck)
 class deal():
 
     def __init__(self):
@@ -41,14 +36,15 @@ class deal():
 
     def dealers_card(self):
         print("Here are the dealers card!")
-        print('Hidden_card', self.dealer[1])
-        print('\n')
+        print('--------------------------')
+        print('Hole_card ,',self.dealer[1])
+        print('**************************')
+        print('**************************')
     def players_card(self):
         print("These are your cards!")
-        print(self.player[0],self.player[1])
-
-
-
+        print('--------------------------')
+        print(self.player[0],',',self.player[1])
+        print('**************************')
 bet_amount=0
 class Chips():
 
@@ -58,28 +54,27 @@ class Chips():
     def bet(self):
         global bet_amount
         while True:
-            bet_amount=int(input("Enter amount you want to bet"))
-            if bet_amount <=self.total:
+            bet_amount=int(input("Enter amount you want to bet "))
+            if bet_amount<=self.total:
                 break
             else:
                 print("You do not have enough chips!")
         return bet_amount
-
     def win_hand(self,bet_amount):
-        self.total += bet_amount
+        self.total+= bet_amount
+        print('---------')
         print("You win!!")
         print(f"You got {self.total}")
-
     def loose_hand(self,bet_amount):
-
-        self.total -= bet_amount
+        self.total-=bet_amount
+        print('---------')
+        print('You lost.')
         print(f"You are left with {self.total}")
-
 
 players_point=0
 def hit_or_stand():
      global players_point
-     players_total_points = []
+     players_total_points=[]
      print("Let me know if you want to hit or stand!")
      print("1.Hit\n2.Stand")
      while True:
@@ -88,17 +83,19 @@ def hit_or_stand():
           cards_dealt.player.append(deck1.deck[0])
           deck1.deck.pop(0)
           print("Here are your cards!!")
+          print('-------')
           for i in range(len(cards_dealt.player)):
-              print(cards_dealt.player[i],end=" ")
-          print('\n')
+              print(cards_dealt.player[i])
+          print('**********************')
        elif option==2:
           points_players_list=list(map(str, cards_dealt.player))
           for i in points_players_list:
              players_total_points.append(values[i.split()[0]])
           break
-     players_point = sum(players_total_points)
+     players_point=sum(players_total_points)
+     print('----------')
      print(f"Total point of yours is {players_point}")
-
+     print('----------')
 dealers_point=0
 def dealers_hit():
     global dealers_point
@@ -112,28 +109,28 @@ def dealers_hit():
          deck1.deck.pop(0)
          total_points=sum(points_list)
     print("Here are the dealers final set of cards!")
+    print('--------')
     for i in map(str, cards_dealt.dealer):
-        print(i,end=" ")
-    print('\n')
+        print(i)
+    print('************************')
     dealers_point=total_points
     print(f"Dealer's total point is {dealers_point}")
 
 
-
+print("Lets play!!")
 Playing= True
 while Playing:
-    total=int(input("Please enter the total amount you want to play for"))
+    total=int(input("Please enter the total amount you want to play for "))
     bet1=Chips(total)
-    print(bet1.bet())
+    bet1.bet()
     deck1=Deck()
     deck1.shuffling()
     cards_dealt=deal()
     cards_dealt.dealers_card()
     cards_dealt.players_card()
     hit_or_stand()
-    print(players_point)
     if players_point > 21:
-        print("Busted!")
+        print("You are Busted!")
         print("Dealer wins it all!")
         bet1.loose_hand(bet_amount)
         break
@@ -145,23 +142,17 @@ while Playing:
             dealers_hit()
             if dealers_point > 21:
                 print("Dealer is busted!")
-                print("You Won!!")
                 bet1.win_hand(bet_amount)
                 break
             elif dealers_point==21:
                 print("Dealer's Blackjack")
                 bet1.loose_hand(bet_amount)
                 break
-    elif players_point < 21 and dealers_point < 21:
-        if  players_point > dealers_point:
-            bet1.win_hand(bet_amount)
-        elif dealers_point > players_point:
-            bet1.loose_hand(bet_amount)
-        else:
-            print("Nobody wins")
-
-exit(0)
-
-
-
-
+            elif players_point < 21 and dealers_point < 21:
+                 if  players_point > dealers_point:
+                    bet1.win_hand(bet_amount)
+                 elif dealers_point > players_point:
+                    bet1.loose_hand(bet_amount)
+                 else:
+                    print("Nobody wins")
+    Playing=False
